@@ -1,24 +1,25 @@
-alphabet = {"A ( B ^ C Ç D ! E É F , G H I ï J ; K L M N / O Ô P Q R S T U ù V W X Y ÿ Z"}
+alphabet = "a(b^cÇd!eÉf,ghiïj;klmn/oÔpqrstuùvwxyÿz"
 
-def cesar_variable_par_mot(phrase):
-    phrase = phrase.lower()
+def cesar_variable_custom_alphabet(phrase, alphabet):
     resultat = ""
     index_dans_mot = 0
+    taille = len(alphabet)
 
     for lettre in phrase:
-        if lettre.isalpha():
+        if lettre in alphabet:
             index_dans_mot += 1
-            decalage = index_dans_mot
-            code = ord(lettre) - ord('a')
-            nouveau_code = (code + decalage) % 26
-            nouvelle_lettre = chr(nouveau_code + ord('a'))
-            resultat += nouvelle_lettre
+            index_lettre = alphabet.index(lettre)
+            nouvel_index = (index_lettre + index_dans_mot) % taille
+            resultat += alphabet[nouvel_index]
         else:
             resultat += lettre
             index_dans_mot = 0
 
     return resultat
 
-message = "a la peche"
-chiffre = cesar_variable_par_mot(message)
-print(f"Message chiffré : {chiffre}")
+message = "à la pêche"
+message = message.lower()
+
+chiffre = cesar_variable_custom_alphabet(message, alphabet)
+print(f"Message original : {message}")
+print(f"Message chiffré  : {chiffre}")
