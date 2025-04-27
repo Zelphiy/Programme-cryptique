@@ -1,25 +1,68 @@
+import random
+import unicodedata
+
 alphabet = "a(b^cÇd!eÉf,ghiïj;klmn/oÔpqrstuùvwxyÿz"
 
-def cesar_variable_custom_alphabet(phrase, alphabet):
+def cles():
+    symbols = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&()*+,-./:;<=>?@[\\]^_{|}~"
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
+    random_symbols = random.sample(symbols, random.randint(10, 20))
+    new_alphabet = list(alphabet + ''.join(random_symbols))
+    random.shuffle(new_alphabet)
+    return ''.join(new_alphabet)
+
+def remove_accents(text):
+    text = unicodedata.normalize('NFD', text)
+    text = ''.join(c for c in text if unicodedata.category(c) != "Mn")
+    return text
+
+def cesar_variable(phrase, new_alphabet, base_index=0):
     resultat = ""
-    index_dans_mot = 0
-    taille = len(alphabet)
+    index_dans_mot = base_index
+    taille = len(new_alphabet)
 
     for lettre in phrase:
-        if lettre in alphabet:
+        if lettre in new_alphabet:
             index_dans_mot += 1
-            index_lettre = alphabet.index(lettre)
+            index_lettre = new_alphabet.index(lettre)
             nouvel_index = (index_lettre + index_dans_mot) % taille
-            resultat += alphabet[nouvel_index]
+            resultat += new_alphabet[nouvel_index]
         else:
             resultat += lettre
-            index_dans_mot = 0
+            index_dans_mot = base_index
 
+    key = f"{base_index}-{new_alphabet}"
+    return resultat, key
+
+def decrypt(message_crypte, key):
+    base_index_str, new_alphabet = key.split("-")
+    base_index = int(base_index_str)
+    
+    resultat = ""
+    index_dans_mot = base_index
+    taille = len(new_alphabet)
+    
+    for lettre in message_crypte:
+        if lettre in new_alphabet:
+            index_dans_mot += 1
+            index_lettre = new_alphabet.index(lettre)
+            nouvel_index = (index_lettre - index_dans_mot) % taille
+            resultat += new_alphabet[nouvel_index]
+        else:
+            resultat += lettre
+            index_dans_mot = base_index
+            
     return resultat
 
-message = "à la pêche"
-message = message.lower()
 
-chiffre = cesar_variable_custom_alphabet(message, alphabet)
-print(f"Message original : {message}")
-print(f"Message chiffré  : {chiffre}")
+new_alphabet = alphabet
+
+message = "à la pêche"
+message_sans_accents = remove_accents(message.lower())
+
+message_crypte, key  = cesar_variable(message_sans_accents, new_alphabet, 2)
+print("Clé : ", key)
+print("Message crypté : ", message_crypte)
+
+message_decode = decrypt(message_crypte, key)
+print("Message décrypté : ", message_decode)
