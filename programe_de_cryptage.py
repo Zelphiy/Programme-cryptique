@@ -1,10 +1,8 @@
 import random
 import unicodedata
 
-alphabet = "a(b^cÇd!eÉf,ghiïj;klmn/oÔpqrstuùvwxyÿz"
-
 def cles():
-    symbols = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&()*+,-./:;<=>?@[\\]^_{|}~"
+    symbols = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&()*+,./:;<=>?@[\]^_{|}~"
     alphabet = "abcdefghijklmnopqrstuvwxyz"
     random_symbols = random.sample(symbols, random.randint(10, 20))
     new_alphabet = list(alphabet + ''.join(random_symbols))
@@ -55,12 +53,12 @@ def decrypt(message_crypte, key):
     return resultat
 
 
-new_alphabet = alphabet
+new_alphabet = cles()
 
 message = "à la pêche"
 message_sans_accents = remove_accents(message.lower())
 
-message_crypte, key  = cesar_variable(message_sans_accents, new_alphabet, 2)
+message_crypte, key  = cesar_variable(message_sans_accents, new_alphabet)
 print("Clé : ", key)
 print("Message crypté : ", message_crypte)
 
