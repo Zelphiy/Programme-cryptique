@@ -4,9 +4,9 @@ import tkinter as tk
 from tkinter import messagebox
 
 def cles():
-    symbols = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&()*+,./:;<=>?@[\]^_{|}~"
-    alphabet = "abcdefghijklmnopqrstuvwxyz"
-    random_symbols = random.sample(symbols, random.randint(10, 20))
+    symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&()*+,/:;<=>?[\]^_{|}~"
+    alphabet = "abcdefghijklmnopqrstuvwxyz0123456789@."
+    random_symbols = random.sample(symbols, random.randint(8, 16))
     new_alphabet = list(alphabet + ''.join(random_symbols))
     random.shuffle(new_alphabet)
     return ''.join(new_alphabet)
